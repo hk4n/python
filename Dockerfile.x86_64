@@ -1,0 +1,35 @@
+FROM ubuntu
+
+ARG PYTHON_VERSION=3.6.0
+
+RUN apt-get update && \
+    apt-get install -y build-essential \
+                        tk-dev \
+                        libncurses5-dev \
+                        libncursesw5-dev \
+                        libreadline6-dev \
+                        libdb5.3-dev \
+                        libgdbm-dev \
+                        libsqlite3-dev \
+                        libssl-dev \
+                        libbz2-dev \
+                        libexpat1-dev \
+                        liblzma-dev \
+                        wget \
+                        zlib1g-dev &&\
+    wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz && \
+    tar xzvf Python-$PYTHON_VERSION.tgz && \
+    cd Python-$PYTHON_VERSION/ && \
+    ./configure && \
+    make && \
+    make install && \
+    cd .. && \
+    rm -r Python-$PYTHON_VERSION && \
+    rm Python-$PYTHON_VERSION.tgz && \
+    apt-get --purge -y remove build-essential tk-dev && \
+    apt-get --purge -y remove libncurses5-dev libncursesw5-dev libreadline6-dev && \
+    apt-get --purge -y remove libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev && \
+    apt-get --purge -y remove libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev && \
+    apt-get --purge -y remove wget && \
+    apt-get autoremove -y && \
+    apt-get clean -y
